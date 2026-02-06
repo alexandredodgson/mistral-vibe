@@ -83,6 +83,7 @@ pip install mistral-vibe
   - [Update Settings](#update-settings)
   - [Custom Vibe Home Directory](#custom-vibe-home-directory)
 - [Editors/IDEs](#editorsides)
+- [Developer Guide](#developer-guide)
 - [Resources](#resources)
 - [License](#license)
 
@@ -589,6 +590,18 @@ This affects where Vibe looks for:
 ## Editors/IDEs
 
 Mistral Vibe can be used in text editors and IDEs that support [Agent Client Protocol](https://agentclientprotocol.com/overview/clients). See the [ACP Setup documentation](docs/acp-setup.md) for setup instructions for various editors and IDEs.
+
+## Developer Guide
+
+Mistral Vibe is designed to be highly extensible. For detailed information on how to build custom tools, skills, and agents, check out our **[Developer Documentation](docs/README.md)**.
+
+Highlights:
+- **[Architecture](docs/developer/architecture.md)**: Deep dive into the core engine and Orchestrator modules.
+- **[Custom Tools](docs/developer/tools.md)**: Add new Python-based capabilities.
+- **[Skills](docs/developer/skills.md)**: Package and share complex functionalities.
+- **[MCP](docs/developer/mcp.md)**: Integrate with the Model Context Protocol ecosystem.
+- **[Project Tracking](docs/developer/project-tracking.md)**: Learn about task tracking with `brainfile.md` and `STATE.md`.
+- **[Scaffolding](docs/developer/scaffolding.md)**: Automate project setup with `/scaffold`.
 
 ## Resources
 

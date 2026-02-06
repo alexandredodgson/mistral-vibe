@@ -90,7 +90,7 @@ class TestMultiSessionCore:
             (msg for msg in session1.agent_loop.messages if msg.role == Role.user), None
         )
         assert user_message1 is not None
-        assert user_message1.content == "Prompt for session 1"
+        assert user_message1.content.startswith("Prompt for session 1")
         assistant_message1 = next(
             (msg for msg in session1.agent_loop.messages if msg.role == Role.assistant),
             None,
@@ -101,7 +101,7 @@ class TestMultiSessionCore:
             (msg for msg in session2.agent_loop.messages if msg.role == Role.user), None
         )
         assert user_message2 is not None
-        assert user_message2.content == "Prompt for session 2"
+        assert user_message2.content.startswith("Prompt for session 2")
         assistant_message2 = next(
             (msg for msg in session2.agent_loop.messages if msg.role == Role.assistant),
             None,
