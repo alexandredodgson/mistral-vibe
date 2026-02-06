@@ -124,6 +124,7 @@ class ReasoningMessage(SpinnerMixin, StreamingMessageBase):
     COMPLETED_TEXT = "Thought"
 
     def __init__(self, content: str, collapsed: bool = True) -> None:
+        self.tooltip = "Click to expand/collapse"
         super().__init__(content)
         self.add_class("reasoning-message")
         self.collapsed = collapsed
