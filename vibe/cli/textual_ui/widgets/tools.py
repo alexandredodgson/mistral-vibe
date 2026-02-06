@@ -84,6 +84,7 @@ class ToolResultMessage(Static):
         self.collapsed = collapsed
         self._content_container: Vertical | None = None
 
+        self.tooltip = "Click to expand/collapse"
         super().__init__()
         self.add_class("tool-result")
 
@@ -198,6 +199,9 @@ class ToolResultMessage(Static):
             return
         self.collapsed = collapsed
         await self._render_result()
+
+    async def on_click(self) -> None:
+        await self.toggle_collapsed()
 
     async def toggle_collapsed(self) -> None:
         self.collapsed = not self.collapsed
