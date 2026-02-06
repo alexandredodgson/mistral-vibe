@@ -4,6 +4,7 @@ from collections.abc import Generator
 import fnmatch
 import html
 import os
+import re
 from pathlib import Path
 import subprocess
 import sys
@@ -42,6 +43,26 @@ class ProjectContextProvider:
         self.gitignore_patterns = self._load_gitignore_patterns()
         self._file_count = 0
         self._start_time = 0.0
+
+        # Pre-compile ignore patterns for better performance
+        file_patterns = []
+        dir_patterns = []
+        for p in self.gitignore_patterns:
+            if not p:
+                continue
+            # fnmatch.fnmatch uses os.path.normcase, so we do too for equivalence
+            p_norm = os.path.normcase(p)
+            if p.endswith("/"):
+                dir_patterns.append(fnmatch.translate(p_norm))
+            else:
+                file_patterns.append(fnmatch.translate(p_norm))
+
+        self._ignore_re = (
+            re.compile("|".join(file_patterns)) if file_patterns else None
+        )
+        self._ignore_dir_re = (
+            re.compile("|".join(dir_patterns)) if dir_patterns else None
+        )
 
     def _load_gitignore_patterns(self) -> list[str]:
         gitignore_path = self.root_path / ".gitignore"
@@ -97,17 +118,17 @@ class ProjectContextProvider:
     def _is_ignored(self, path: Path) -> bool:
         try:
             relative_path = path.relative_to(self.root_path)
-            path_str = str(relative_path)
+            # Match fnmatch's use of normcase
+            path_str = os.path.normcase(str(relative_path))
 
-            for pattern in self.gitignore_patterns:
-                if pattern.endswith("/"):
-                    if path.is_dir() and fnmatch.fnmatch(f"{path_str}/", pattern):
-                        return True
-                elif fnmatch.fnmatch(path_str, pattern):
+            # Check general patterns (files and directories)
+            if self._ignore_re and self._ignore_re.match(path_str):
+                return True
+
+            # Check directory-only patterns
+            if path.is_dir() and self._ignore_dir_re:
+                if self._ignore_dir_re.match(f"{path_str}{os.sep}"):
                     return True
-                elif "*" in pattern or "?" in pattern:
-                    if fnmatch.fnmatch(path_str, pattern):
-                        return True
 
             return False
         except (ValueError, OSError):
