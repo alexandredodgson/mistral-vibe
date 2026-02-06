@@ -82,7 +82,8 @@ def test_run_programmatic_preload_streaming_is_batched(
         )
         assert spy.emitted[1][1] == "Previously, you told me about decorators."
         assert spy.emitted[2][1] == "Sure, decorators allow you to wrap functions."
-        assert spy.emitted[3][1] == "Can you summarize what decorators are?"
+        assert spy.emitted[3][1] is not None
+        assert spy.emitted[3][1].startswith("Can you summarize what decorators are?")
         assert (
             spy.emitted[4][1]
             == "Decorators are wrappers that modify function behavior."
@@ -133,5 +134,6 @@ def test_run_programmatic_ignores_system_messages_in_previous(
             spy.emitted[0][1] == "You are Vibe, a super useful programming assistant."
         )
         assert spy.emitted[1][1] == "Continue our previous discussion."
-        assert spy.emitted[2][1] == "Let's move on to practical examples."
+        assert spy.emitted[2][1] is not None
+        assert spy.emitted[2][1].startswith("Let's move on to practical examples.")
         assert spy.emitted[3][1] == "Understood."

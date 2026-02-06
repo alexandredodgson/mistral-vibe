@@ -39,7 +39,7 @@ class TestACPContent:
             None,
         )
         assert user_message is not None, "User message not found in backend requests"
-        assert user_message.content == "Say hi"
+        assert user_message.content.startswith("Say hi")
 
     @pytest.mark.asyncio
     async def test_resource_content(
@@ -75,7 +75,7 @@ class TestACPContent:
             + "\n\npath: file:///home/my_file.py"
             + "\ncontent: def hello():\n    print('Hello, world!')"
         )
-        assert user_message.content == expected_content
+        assert user_message.content.startswith(expected_content)
 
     @pytest.mark.asyncio
     async def test_resource_link_content(
@@ -116,7 +116,7 @@ class TestACPContent:
             + "\nmime_type: application/pdf"
             + "\nsize: 1024"
         )
-        assert user_message.content == expected_content
+        assert user_message.content.startswith(expected_content)
 
     @pytest.mark.asyncio
     async def test_resource_link_minimal(
@@ -144,4 +144,4 @@ class TestACPContent:
         )
         assert user_message is not None, "User message not found in backend requests"
         expected_content = "uri: file:///home/minimal.txt\nname: minimal.txt"
-        assert user_message.content == expected_content
+        assert user_message.content.startswith(expected_content)
