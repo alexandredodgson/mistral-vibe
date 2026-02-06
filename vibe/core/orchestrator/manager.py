@@ -35,12 +35,18 @@ class OrchestratorMiddleware:
         if not self.orchestrator.architect.validate_spec():
              spec_warning = "\n<warning>SPEC.md is missing or empty. You must define the specification in SPEC.md before modifying code.</warning>"
 
+        arch_info = ""
+        if not self.orchestrator.architect.arch_file.exists():
+             arch_info = "\n<info>ARCHITECTURE.md is missing. Use 'analyze_architecture(update_docs=True)' to generate a dependency graph.</info>"
+        elif "graph TD" in self.orchestrator.architect.arch_file.read_text() and "User -->|Input| CLI" in self.orchestrator.architect.arch_file.read_text():
+             arch_info = "\n<info>ARCHITECTURE.md contains default content. Use 'analyze_architecture(update_docs=True)' to generate a real dependency graph of the project.</info>"
+
         context_msg = f"""
 <orchestrator_context>
 Current Phase: {state['phase']}
 Progress: {state['progress']}%
 Active Task: {active_task or "None (Check brainfile.md)"}
-{spec_warning}
+{spec_warning}{arch_info}
 
 Remember to use <ai_plan>, <ai_notes>, and <ai_review> tags in your response to update the plan and log your reasoning.
 </orchestrator_context>
