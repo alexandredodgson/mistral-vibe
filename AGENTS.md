@@ -1,3 +1,5 @@
+# Always use Context7 MCP when I need library/API documentation, code generation, setup or configuration steps without me having to explicitly ask.
+
 # python312.rule
 # Rule for enforcing modern Python 3.12+ best practices.
 # Applies to all Python files (*.py) in the project.
