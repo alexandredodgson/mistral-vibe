@@ -39,6 +39,7 @@ from vibe.cli.textual_ui.widgets.chat_input import ChatInputContainer
 from vibe.cli.textual_ui.widgets.compact import CompactMessage
 from vibe.cli.textual_ui.widgets.config_app import ConfigApp
 from vibe.cli.textual_ui.widgets.context_progress import ContextProgress, TokenState
+from vibe.cli.textual_ui.widgets.help_footer import HelpFooter
 from vibe.cli.textual_ui.widgets.loading import LoadingWidget, paused_timer
 from vibe.cli.textual_ui.widgets.messages import (
     AssistantMessage,
@@ -196,7 +197,7 @@ class VibeApp(App):  # noqa: PLR0904
 
         with Horizontal(id="bottom-bar"):
             yield PathDisplay(self.config.displayed_workdir or Path.cwd())
-            yield NoMarkupStatic(id="spacer")
+            yield HelpFooter(id="help-footer")
             yield ContextProgress()
 
     async def on_mount(self) -> None:

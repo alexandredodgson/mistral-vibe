@@ -71,6 +71,14 @@ Screen {
     background: transparent;
 }
 
+#help-footer {
+    width: 1fr;
+    height: auto;
+    background: transparent;
+    color: $text-muted;
+    text-align: center;
+}
+
 #messages {
     layout: stream;
     width: 100%;
