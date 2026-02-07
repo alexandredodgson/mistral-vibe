@@ -139,6 +139,14 @@ class Grep(
         path_obj = Path(args.path).expanduser()
         if not path_obj.is_absolute():
             path_obj = Path.cwd() / path_obj
+        path_obj = path_obj.resolve()
+
+        try:
+            path_obj.relative_to(Path.cwd().resolve())
+        except ValueError:
+            raise ToolError(
+                f"Security error: Cannot grep path '{path_obj}' outside of the project directory '{Path.cwd()}'."
+            )
 
         if not path_obj.exists():
             raise ToolError(f"Path does not exist: {args.path}")

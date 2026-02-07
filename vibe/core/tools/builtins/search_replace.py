@@ -188,6 +188,13 @@ class SearchReplace(
             file_path = project_root / file_path
         file_path = file_path.resolve()
 
+        try:
+            file_path.relative_to(project_root.resolve())
+        except ValueError:
+            raise ToolError(
+                f"Security error: Cannot access path '{file_path}' outside of the project directory '{project_root}'."
+            )
+
         if not file_path.exists():
             raise ToolError(f"File does not exist: {file_path}")
 

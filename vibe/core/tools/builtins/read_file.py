@@ -164,6 +164,7 @@ class ReadFile(
     def _validate_path(self, file_path: Path) -> None:
         try:
             resolved_path = file_path.resolve()
+            resolved_path.relative_to(Path.cwd().resolve())
         except ValueError:
             raise ToolError(
                 f"Security error: Cannot read path '{file_path}' outside of the project directory '{Path.cwd()}'."
